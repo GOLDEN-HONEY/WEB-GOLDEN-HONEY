@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golden Honey — Premium Cannabis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --white: #ffffff;
+    --off-white: #f8f8f6;
+    --black: #0a0a0a;
+    --gray-100: #f0efed;
+    --gray-400: #999;
+    --gray-700: #444;
+    --accent: #c8a84b;
+    --accent-light: #e8d48b;
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: auto; }
+
+  body {
+    background: var(--white);
+    color: var(--black);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed;
+    width: 10px; height: 10px;
+    background: var(--black);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 40px; height: 40px;
+    border: 1.5px solid var(--black);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.12s ease-out, width 0.3s, height 0.3s, opacity 0.3s;
+    opacity: 0.5;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 24px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    mix-blend-mode: multiply;
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--black);
+  }
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--black);
+    text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+  }
+  .nav-links a:hover { opacity: 1; }
+
+  /* HERO */
+  .hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background: var(--white);
+  }
+
+  .hero-bg-text {
+    position: absolute;
+    font-family: var(--font-display);
+    font-size: clamp(80px, 18vw, 280px);
+    font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(0,0,0,0.05);
+    white-space: nowrap;
+    user-select: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    letter-spacing: -0.02em;
+    z-index: 0;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    z-index: 2;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(42px, 7vw, 96px);
+    font-weight: 900;
+    line-height: 0.95;
+    text-align: center;
+    letter-spacing: -0.03em;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .hero-title span {
+    display: block;
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-subtitle {
+    margin-top: 24px;
+    font-size: 0.95rem;
+    color: var(--gray-400);
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .hero-product {
+    position: absolute;
+    z-index: 1;
+    bottom: -10%;
+    width: 340px;
+    opacity: 0;
+    transform: translateY(60px) scale(0.9);
+    filter: drop-shadow(0 60px 80px rgba(0,0,0,0.18));
+    will-change: transform;
+  }
+
+  .hero-product img { width: 100%; }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    z-index: 10;
+    opacity: 0;
+  }
+  .scroll-indicator span {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+  }
+  .scroll-line {
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, var(--black), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { transform: scaleY(1); opacity: 0.4; }
+    50% { transform: scaleY(1.3); opacity: 1; }
+  }
+
+  /* MARQUEE */
+  .marquee-section {
+    overflow: hidden;
+    padding: 20px 0;
+    background: var(--black);
+    position: relative;
+  }
+  .marquee-track {
+    display: flex;
+    gap: 64px;
+    white-space: nowrap;
+    animation: marquee 20s linear infinite;
+  }
+  .marquee-item {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-shrink: 0;
+  }
+  .marquee-item::after {
+    content: '✦';
+    color: rgba(200,168,75,0.4);
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* PRODUCTS SCROLL */
+  .products-section {
+    padding: 120px 0;
+    position: relative;
+  }
+
+  .section-label {
+    text-align: center;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 80px;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .product-scroll-container {
+    position: relative;
+  }
+
+  /* Individual product reveals */
+  .product-reveal {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    min-height: 100vh;
+    padding: 0 8vw;
+    gap: 60px;
+    position: relative;
+  }
+
+  .product-reveal.reverse {
+    direction: rtl;
+  }
+  .product-reveal.reverse > * { direction: ltr; }
+
+  .product-reveal-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .product-reveal-image img {
+    width: 100%;
+    max-width: 420px;
+    filter: drop-shadow(0 40px 60px rgba(0,0,0,0.15));
+    will-change: transform;
+    transform-style: preserve-3d;
+  }
+
+  .product-reveal-image::before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,168,75,0.08) 0%, transparent 70%);
+    z-index: -1;
+    animation: glow 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from { transform: scale(1); opacity: 0.5; }
+    to { transform: scale(1.3); opacity: 1; }
+  }
+
+  .product-reveal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    overflow: hidden;
+  }
+
+  .product-number {
+    font-family: var(--font-display);
+    font-size: 5rem;
+    font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(0,0,0,0.1);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .product-name {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4vw, 58px);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+  }
+
+  .product-name em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .product-desc {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--gray-700);
+    line-height: 1.7;
+    max-width: 380px;
+  }
+
+  .product-tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .tag {
+    padding: 6px 16px;
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-700);
+    transition: all 0.3s;
+  }
+
+  .tag.accent {
+    background: var(--black);
+    color: var(--white);
+    border-color: var(--black);
+  }
+
+  .product-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(0,0,0,0.08), transparent);
+  }
+
+  /* FEATURES STRIP */
+  .features-section {
+    padding: 120px 8vw;
+    background: var(--black);
+    color: var(--white);
+    overflow: hidden;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 80px;
+  }
+
+  .feature-card {
+    padding: 56px 48px;
+    border: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(200,168,75,0.05) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+
+  .feature-card:hover::before { opacity: 1; }
+
+  .feature-icon {
+    font-size: 2rem;
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  .feature-title {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
+
+  .feature-desc {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .feature-number {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    font-family: var(--font-display);
+    font-size: 4rem;
+    font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.06);
+  }
+
+  /* SECTION HEADERS */
+  .section-header {
+    text-align: center;
+  }
+
+  .section-header h2 {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 72px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.0;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .section-header h2 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .section-header p {
+    margin-top: 20px;
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.4);
+    font-weight: 300;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  /* SHOWCASE */
+  .showcase-section {
+    padding: 160px 8vw;
+    background: var(--off-white);
+    overflow: hidden;
+  }
+
+  .showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 80px;
+  }
+
+  .showcase-card {
+    aspect-ratio: 3/4;
+    background: var(--white);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+    transition: box-shadow 0.4s;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+  }
+
+  .showcase-card:hover {
+    box-shadow: 0 24px 64px rgba(0,0,0,0.14);
+  }
+
+  .showcase-card img {
+    width: 80%;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));
+  }
+
+  .showcase-card:hover img { transform: scale(1.05) translateY(-8px); }
+
+  .showcase-card-label {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--gray-400);
+  }
+
+  .showcase-card-type {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-weight: 500;
+  }
+
+  .type-sativa { background: rgba(255,100,80,0.1); color: #e05540; }
+  .type-hybrid { background: rgba(80,100,255,0.1); color: #5060dd; }
+  .type-premium { background: rgba(200,168,75,0.12); color: var(--accent); }
+
+  /* CTA FINAL */
+  .cta-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 8vw;
+    position: relative;
+    overflow: hidden;
+    background: var(--white);
+  }
+
+  .cta-bg-circle {
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.04);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: rotateSlow 30s linear infinite;
+  }
+
+  .cta-bg-circle:nth-child(2) {
+    width: 600px; height: 600px;
+    border-color: rgba(0,0,0,0.06);
+    animation-direction: reverse;
+    animation-duration: 20s;
+  }
+
+  .cta-bg-circle:nth-child(3) {
+    width: 400px; height: 400px;
+    border-color: rgba(200,168,75,0.1);
+    animation-duration: 15s;
+  }
+
+  @keyframes rotateSlow {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  .cta-product {
+    width: 260px;
+    filter: drop-shadow(0 40px 60px rgba(0,0,0,0.2));
+    animation: floatProduct 5s ease-in-out infinite alternate;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  @keyframes floatProduct {
+    from { transform: translateY(0px) rotate(-1deg); }
+    to { transform: translateY(-18px) rotate(1deg); }
+  }
+
+  .cta-title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 72px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    text-align: center;
+    margin: 40px 0 20px;
+    line-height: 1.0;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .cta-title em { font-style: italic; color: var(--accent); }
+
+  .cta-sub {
+    font-size: 0.95rem;
+    color: var(--gray-400);
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: 300;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 48px;
+    background: var(--black);
+    color: var(--white);
+    border: none;
+    border-radius: 100px;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: none;
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform: translateX(-101%);
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .btn-primary:hover::before { transform: translateX(0); }
+  .btn-primary:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+
+  .btn-primary span { position: relative; z-index: 1; }
+  .btn-arrow { position: relative; z-index: 1; transition: transform 0.3s; }
+  .btn-primary:hover .btn-arrow { transform: translateX(4px); }
+
+  /* FOOTER */
+  footer {
+    padding: 48px 8vw;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: var(--gray-400);
+    letter-spacing: 0.08em;
+  }
+
+  footer .logo { font-family: var(--font-display); font-size: 0.9rem; color: var(--black); font-weight: 700; }
+
+  /* PAGE LOADER */
+  .loader {
+    position: fixed;
+    inset: 0;
+    background: var(--black);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .loader-logo {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--white);
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    opacity: 0;
+    animation: loaderFade 0.5s 0.3s ease forwards;
+  }
+
+  .loader-logo em { color: var(--accent); font-style: italic; }
+
+  .loader-bar {
+    width: 200px;
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .loader-bar::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    width: 0;
+    background: var(--accent);
+    animation: loaderBar 1.2s 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  }
+
+  @keyframes loaderFade {
+    to { opacity: 1; }
+  }
+
+  @keyframes loaderBar {
+    to { width: 100%; }
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    .product-reveal {
+      grid-template-columns: 1fr;
+      min-height: auto;
+      padding: 80px 6vw;
+      gap: 40px;
+    }
+    .product-reveal.reverse { direction: ltr; }
+    .product-reveal-image img { max-width: 280px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .showcase-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .cta-product { width: 200px; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+  <div class="loader-logo">Golden <em>Honey</em></div>
+  <div class="loader-bar"></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Golden Honey</div>
+  <ul class="nav-links">
+    <li><a href="#">Colección</a></li>
+    <li><a href="#">Nosotros</a></li>
+    <li><a href="#">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg-text">PREMIUM</div>
+  <p class="hero-eyebrow" id="heroEyebrow">Golden Honey — Edición 2026</p>
+  <h1 class="hero-title" id="heroTitle">
+    Inhale  
+    <span>Excellence.</span>
+  </h1>
+  <p class="hero-subtitle" id="heroSub">Cannabis de primera calidad · Experiencias únicas</p>
+  <div class="hero-product" id="heroProduct">
+    <img src="muhamed.png" alt="Muha Meds Strawberry Cough">
+  </div>
+  <div class="scroll-indicator" id="scrollIndicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item">Muha Meds</div>
+    <div class="marquee-item">Brass Knuckles</div>
+    <div class="marquee-item">Ace Ultra Premium</div>
+    <div class="marquee-item">Blue Dream</div>
+    <div class="marquee-item">Sativa · Hybrid</div>
+    <div class="marquee-item">2000mg</div>
+    <div class="marquee-item">Muha Meds</div>
+    <div class="marquee-item">Brass Knuckles</div>
+    <div class="marquee-item">Ace Ultra Premium</div>
+    <div class="marquee-item">Blue Dream</div>
+    <div class="marquee-item">Sativa · Hybrid</div>
+    <div class="marquee-item">2000mg</div>
+  </div>
+</div>
+
+<!-- PRODUCTS SECTION -->
+<section class="products-section">
+  <p class="section-label" id="productsLabel">Nuestra Colección</p>
+
+  <!-- Product 1 -->
+  <div class="product-reveal" id="p1">
+    <div class="product-reveal-image">
+      <img src="muhamed.png" alt="Strawberry Cough" id="img1" class="parallax-img">
+    </div>
+    <div class="product-reveal-info">
+      <div class="product-number">01</div>
+      <h2 class="product-name">Strawberry<br><em>Cough</em></h2>
+      <p class="product-desc">Una explosión frutal que eleva tu estado de ánimo. Formulada con concentrado Sativa puro para energizar tu día con cada inhalación.</p>
+      <div class="product-tags">
+        <span class="tag accent">Sativa</span>
+        <span class="tag">2000mg</span>
+        <span class="tag">Fresa · Dulce</span>
+        <span class="tag">Muha Meds</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="product-divider"></div>
+
+  <!-- Product 2 -->
+  <div class="product-reveal reverse" id="p2">
+    <div class="product-reveal-image">
+      <img src="bluedream.png" alt="Blue Dream" id="img2" class="parallax-img">
+    </div>
+    <div class="product-reveal-info">
+      <div class="product-number">02</div>
+      <h2 class="product-name">Blue<br><em>Dream</em></h2>
+      <p class="product-desc">Un viaje entre nubes. La armonía perfecta entre el cuerpo y la mente. Hybrid de alta potencia para los momentos que mereces celebrar.</p>
+      <div class="product-tags">
+        <span class="tag accent">Hybrid</span>
+        <span class="tag">2000mg</span>
+        <span class="tag">Mora · Floral</span>
+        <span class="tag">Muha Meds</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="product-divider"></div>
+
+  <!-- Product 3 -->
+  <div class="product-reveal" id="p3">
+    <div class="product-reveal-image">
+      <img src="kitcapsula.png" alt="Brass Knuckles Kit" id="img3" class="parallax-img">
+    </div>
+    <div class="product-reveal-info">
+      <div class="product-number">03</div>
+      <h2 class="product-name">Brass<br><em>Knuckles</em></h2>
+      <p class="product-desc">El kit completo para el entendido. Batería premium, cargador USB y cartucho de extracción pura. Potencia y elegancia en un solo sistema.</p>
+      <div class="product-tags">
+        <span class="tag accent">Kit Completo</span>
+        <span class="tag">Batería</span>
+        <span class="tag">Cartucho</span>
+        <span class="tag">Golden Honey</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="product-divider"></div>
+
+  <!-- Product 4 -->
+  <div class="product-reveal reverse" id="p4">
+    <div class="product-reveal-image">
+      <img src="ace.png" alt="Ace Ultra Premium" id="img4" class="parallax-img">
+    </div>
+    <div class="product-reveal-info">
+      <div class="product-number">04</div>
+      <h2 class="product-name">Ace Ultra<br><em>Premium</em></h2>
+      <p class="product-desc">La joya de nuestra colección. Presentación de lujo en estuche de terciopelo. Para quienes no aceptan menos que lo extraordinario.</p>
+      <div class="product-tags">
+        <span class="tag accent">Luxury Edition</span>
+        <span class="tag">Estuche Velvet</span>
+        <span class="tag">Ultra Premium</span>
+        <span class="tag">Golden Honey</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+  <div class="section-header" id="featuresHeader">
+    <h2>¿Por qué <em>Golden Honey?</em></h2>
+    <p>Calidad certificada. Experiencia sin igual.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card" id="fc1">
+      <span class="feature-icon">⚗️</span>
+      <div class="feature-number">01</div>
+      <h3 class="feature-title">Extracción Pura</h3>
+      <p class="feature-desc">Proceso de extracción de última generación que preserva todos los terpenos y cannabinoides para una experiencia auténtica.</p>
+    </div>
+    <div class="feature-card" id="fc2">
+      <span class="feature-icon">🔬</span>
+      <div class="feature-number">02</div>
+      <h3 class="feature-title">Lab Tested</h3>
+      <p class="feature-desc">Cada lote certificado por laboratorios independientes. Pureza y potencia garantizadas en cada inhalación.</p>
+    </div>
+    <div class="feature-card" id="fc3">
+      <span class="feature-icon">✦</span>
+      <div class="feature-number">03</div>
+      <h3 class="feature-title">Diseño Premium</h3>
+      <p class="feature-desc">Hardware de grado médico con tecnología de calentamiento cerámico. Cada componente seleccionado para la máxima calidad.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SHOWCASE -->
+<section class="showcase-section">
+  <div class="section-header" id="showcaseHeader">
+    <h2 style="color: var(--black);">La <em>Colección</em></h2>
+    <p style="color: var(--gray-400);">Cuatro experiencias. Un estándar.</p>
+  </div>
+  <div class="showcase-grid">
+    <div class="showcase-card" id="sc1">
+      <span class="showcase-card-type type-sativa">Sativa</span>
+      <img src="muhamed.png" alt="Strawberry Cough">
+      <span class="showcase-card-label">Strawberry Cough</span>
+    </div>
+    <div class="showcase-card" id="sc2">
+      <span class="showcase-card-type type-hybrid">Hybrid</span>
+      <img src="bluedream.png" alt="Blue Dream">
+      <span class="showcase-card-label">Blue Dream</span>
+    </div>
+    <div class="showcase-card" id="sc3">
+      <span class="showcase-card-type type-premium">Kit</span>
+      <img src="kitcapsula.png" alt="Brass Knuckles">
+      <span class="showcase-card-label">Brass Knuckles</span>
+    </div>
+    <div class="showcase-card" id="sc4">
+      <span class="showcase-card-type type-premium">Luxury</span>
+      <img src="ace.png" alt="Ace Ultra Premium">
+      <span class="showcase-card-label">Ace Ultra Premium</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section" id="ctaSection">
+  <div class="cta-bg-circle"></div>
+  <div class="cta-bg-circle"></div>
+  <div class="cta-bg-circle"></div>
+  <img src="ace.png" alt="Ace Premium" class="cta-product" id="ctaProduct">
+  <h2 class="cta-title" id="ctaTitle">Tu siguiente<br><em>nivel.</em></h2>
+  <p class="cta-sub" id="ctaSub">Selección curada para paladares exigentes.</p>
+  <button class="btn-primary" id="ctaBtn">
+    <span>Ver Colección Completa</span>
+    <span class="btn-arrow">→</span>
+  </button>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">Golden Honey</div>
+  <span>© 2025 · Premium Cannabis · Uso adulto responsable</span>
+  <span>+18 · Prohibida la venta a menores</span>
+</footer>
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<script>
+// ─── CURSOR ───────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+});
+
+function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+document.querySelectorAll('a, button, .showcase-card').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.width = '6px';
+    cursor.style.height = '6px';
+    ring.style.width = '60px';
+    ring.style.height = '60px';
+    ring.style.opacity = '0.3';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.width = '10px';
+    cursor.style.height = '10px';
+    ring.style.width = '40px';
+    ring.style.height = '40px';
+    ring.style.opacity = '0.5';
+  });
+});
+
+// ─── LOADER ───────────────────────────────────────────
+const loader = document.getElementById('loader');
+
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    gsap.to(loader, {
+      yPercent: -100,
+      duration: 1,
+      ease: 'power4.inOut',
+      onComplete: () => {
+        loader.style.display = 'none';
+        initAnimations();
+      }
+    });
+  }, 1400);
+});
+
+// ─── GSAP ANIMATIONS ──────────────────────────────────
+function initAnimations() {
+  gsap.registerPlugin(ScrollTrigger);
+
+  // ── HERO entrance
+  const heroTL = gsap.timeline({ defaults: { ease: 'power3.out' } });
+  heroTL
+    .to('#heroEyebrow', { opacity: 1, y: 0, duration: 0.8 })
+    .to('#heroTitle', { opacity: 1, y: 0, duration: 1 }, '-=0.5')
+    .to('#heroSub', { opacity: 1, y: 0, duration: 0.8 }, '-=0.6')
+    .to('#heroProduct', { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'power2.out' }, '-=0.7')
+    .to('#scrollIndicator', { opacity: 1, duration: 0.6 }, '-=0.2');
+
+  // ── HERO parallax on scroll
+  gsap.to('#heroProduct', {
+    yPercent: 30,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#hero',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: 1
+    }
+  });
+
+  gsap.to('.hero-bg-text', {
+    yPercent: 20,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#hero',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: 2
+    }
+  });
+
+  // ── SECTION LABEL
+  gsap.to('#productsLabel', {
+    opacity: 1, y: 0, duration: 0.8,
+    scrollTrigger: { trigger: '#productsLabel', start: 'top 85%' }
+  });
+
+  // ── PRODUCT REVEALS (staggered per section)
+  ['p1','p2','p3','p4'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    const img = el.querySelector('.product-reveal-image img');
+    const info = el.querySelector('.product-reveal-info');
+    const num = el.querySelector('.product-number');
+    const name = el.querySelector('.product-name');
+    const desc = el.querySelector('.product-desc');
+    const tags = el.querySelector('.product-tags');
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 70%',
+        toggleActions: 'play none none none'
+      }
+    });
+
+    tl.fromTo(img, { opacity: 0, x: i % 2 === 0 ? -60 : 60, scale: 0.92 },
+                   { opacity: 1, x: 0, scale: 1, duration: 1.1, ease: 'power3.out' })
+      .fromTo(num, { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.6 }, '-=0.7')
+      .fromTo(name, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.4')
+      .fromTo(desc, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7 }, '-=0.4')
+      .fromTo(tags.children, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.08 }, '-=0.3');
+
+    // 3D parallax on each image
+    gsap.to(img, {
+      yPercent: -15,
+      rotateX: 4,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1.5
+      }
+    });
+  });
+
+  // ── FEATURES
+  gsap.to('#featuresHeader h2', {
+    opacity: 1, y: 0, duration: 0.9,
+    scrollTrigger: { trigger: '#featuresHeader', start: 'top 80%' }
+  });
+  gsap.to('#featuresHeader p', {
+    opacity: 1, y: 0, duration: 0.8, delay: 0.2,
+    scrollTrigger: { trigger: '#featuresHeader', start: 'top 80%' }
+  });
+
+  ['fc1','fc2','fc3'].forEach((id, i) => {
+    gsap.to('#' + id, {
+      opacity: 1, y: 0, duration: 0.9, delay: i * 0.15, ease: 'power3.out',
+      scrollTrigger: { trigger: '#' + id, start: 'top 85%' }
+    });
+  });
+
+  // ── SHOWCASE HEADER
+  gsap.to('#showcaseHeader h2', {
+    opacity: 1, y: 0, duration: 0.9,
+    scrollTrigger: { trigger: '#showcaseHeader', start: 'top 80%' }
+  });
+  gsap.to('#showcaseHeader p', {
+    opacity: 1, y: 0, duration: 0.8, delay: 0.2,
+    scrollTrigger: { trigger: '#showcaseHeader', start: 'top 80%' }
+  });
+
+  // ── SHOWCASE CARDS
+  ['sc1','sc2','sc3','sc4'].forEach((id, i) => {
+    gsap.to('#' + id, {
+      opacity: 1, y: 0, scale: 1, duration: 0.9,
+      delay: i * 0.12, ease: 'power3.out',
+      scrollTrigger: { trigger: '#' + id, start: 'top 88%' }
+    });
+  });
+
+  // ── CTA SECTION
+  const ctaTL = gsap.timeline({
+    scrollTrigger: { trigger: '#ctaSection', start: 'top 70%' }
+  });
+  ctaTL
+    .to('#ctaProduct', { opacity: 1, y: 0, duration: 1, ease: 'power3.out' })
+    .to('#ctaTitle', { opacity: 1, y: 0, duration: 0.9 }, '-=0.5')
+    .to('#ctaSub', { opacity: 1, y: 0, duration: 0.7 }, '-=0.4')
+    .to('#ctaBtn', { opacity: 1, y: 0, duration: 0.7 }, '-=0.3');
+
+  // ── SMOOTH PARALLAX on mouse move (hero product)
+  document.querySelector('.hero').addEventListener('mousemove', e => {
+    const { clientX, clientY } = e;
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+    const rx_ = (clientY - cy) / cy * -8;
+    const ry_ = (clientX - cx) / cx * 10;
+
+    gsap.to('#heroProduct', {
+      rotateX: rx_,
+      rotateY: ry_,
+      duration: 1,
+      ease: 'power2.out',
+      transformPerspective: 800
+    });
+  });
+
+  document.querySelector('.hero').addEventListener('mouseleave', () => {
+    gsap.to('#heroProduct', { rotateX: 0, rotateY: 0, duration: 1.5, ease: 'elastic.out(1,0.5)' });
+  });
+
+  // ── Light/reflection shimmer effect on CTA product
+  const ctaImg = document.querySelector('.cta-product');
+  document.querySelector('.cta-section').addEventListener('mousemove', e => {
+    const rect = ctaImg.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = (e.clientX - cx) / 200;
+    const dy = (e.clientY - cy) / 200;
+    gsap.to(ctaImg, {
+      rotateY: dx * 12,
+      rotateX: -dy * 8,
+      duration: 0.6,
+      ease: 'power2.out',
+      transformPerspective: 600
+    });
+  });
+
+  document.querySelector('.cta-section').addEventListener('mouseleave', () => {
+    gsap.to(ctaImg, { rotateY: 0, rotateX: 0, duration: 1, ease: 'elastic.out(1,0.4)' });
+  });
+}
+</script>
+</body>
+</html>
